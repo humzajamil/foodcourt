@@ -2,10 +2,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, StyleSheet, ScrollView, View} from 'react-native';
-import {set} from 'react-native-reanimated';
+import {
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  ScrollView,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import ItemCard from './ItemCard';
-import LoadingIndicator from './LoadingIndicator';
 
 const baseUrl =
   'https://mywyzer.com:8443/Menu/get?businessId=8983&userId=12238&dateTime=2021-03-18%2016:27:26&offset=0&locationId=11072';
@@ -24,22 +29,34 @@ const Item = () => {
     setLoading(false);
   };
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {item.map(pay => {
-        return (
-          <SafeAreaView style={{marginVertical: 10}}>
-            <View style={styles.text}>
-              <Text style={{fontWeight: 'bold'}}>{pay.name}</Text>
-            </View>
-            <ItemCard data={pay.item} />
-          </SafeAreaView>
-        );
-      })}
-    </ScrollView>
+    <SafeAreaView style={{flex: 1}}>
+      {loading ? (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#FF4500" />
+        </View>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {item.map(pay => {
+            return (
+              <SafeAreaView style={{marginVertical: 10}}>
+                <View style={styles.text}>
+                  <Text style={{fontWeight: 'bold'}}>{pay.name}</Text>
+                </View>
+                <ItemCard data={pay.item} />
+              </SafeAreaView>
+            );
+          })}
+        </ScrollView>
+      )}
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   text: {
     marginHorizontal: 8,
   },
